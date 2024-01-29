@@ -41,10 +41,19 @@ app.post('/clientes', async (req, res) => {
 
         const result = await pool.query(query, values);
 
-        res.json(result.rows[0]);
+        res.status(200).json({
+            success: true,
+            message: 'Cadastro realizado com sucesso!',
+            results: result.rows[0]
+        });
+
     } catch (error) {
         console.error(error);
-        res.status(500).send('Erro ao processar a requisição.');
+        res.status(500).json({
+            success: false,
+            message: 'Erro ao realizar cadastro.',
+            error: error.message 
+        });
     }
 });
 
