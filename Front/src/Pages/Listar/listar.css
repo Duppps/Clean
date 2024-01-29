@@ -1,18 +1,9 @@
 .container {
-    width: 80vw;
-    margin: 0 auto;
     background-color: #faf9f7;
-    padding: 0 2vw;
 }
 
 .input-text {
     width: 15%;
-}
-
-.tabela {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #ccc;
 }
 
 .tabela th,
@@ -33,11 +24,23 @@
     background-color: #e0e0e0;
 }
 
+.tabela th.colunaID {
+    width: 60px;
+}
+
+.tabela th.colunaEmail {
+    width: 600px;
+}
+
+.tabela th.colunaTelefone {
+    width: 150px;
+}
+
 .botao {
     margin: auto 0 auto auto;
     background-color: yellow;
 }
 
-.cabecalho {
+.cabecalho-pagina {
     display: flex;
 }

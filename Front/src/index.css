@@ -12,15 +12,23 @@ code {
     monospace;
 }
 
+.container {
+  width: 80vw;
+  margin: 0 auto;
+  padding: 0 2vw;
+}
+
 .input-text {
   border: 1.5px solid black;
   border-radius: 2px;
-  min-height: 20px;  
+  min-height: 20px;
 }
 
 .tabela {
   width: 100%;
   margin-top: 20px;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
 }
 
 .align-center {
@@ -30,5 +38,5 @@ code {
 .botao {
   border: 1.5px solid black;
   border-radius: 2px;
-  height: 24px; 
+  height: 24px;
 }

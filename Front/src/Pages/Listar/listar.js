@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Cabecalho from '../../Components/Cabecalho/cabecalho';
 import './listar.css';
 
 function ListarClientes() {
@@ -41,40 +42,43 @@ function ListarClientes() {
     };
 
     return (
-        <div className='container'>
-            <div className='cabecalho'>
-                <h1>Clientes:</h1>
-                <button className='botao'>Visualizar melhor rota</button>
-            </div>
-            <input
-                className='input-text'
-                type="text"
-                placeholder="Filtrar por nome, email ou telefone"
-                value={filtro}
-                onChange={handleFiltroChange}
-            />
-            {clientesFiltrados && (
-                <table className='tabela'>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Telefone</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {clientesFiltrados.map((item) => (
-                            <tr key={item.id}>
-                                <td className='align-center'>{item.id}</td>
-                                <td>{item.nome}</td>
-                                <td>{item.email}</td>
-                                <td>{item.telefone}</td>
+        <div>
+            <Cabecalho></Cabecalho>
+            <div className='container'>
+                <div className='cabecalho-pagina'>
+                    <h1>Clientes:</h1>
+                    <button className='botao'>Visualizar melhor rota</button>
+                </div>
+                <input
+                    className='input-text'
+                    type="text"
+                    placeholder="Filtrar por nome, email ou telefone"
+                    value={filtro}
+                    onChange={handleFiltroChange}
+                />
+                {clientesFiltrados && (
+                    <table className='tabela'>
+                        <thead>
+                            <tr>
+                                <th className='colunaID'>ID</th>
+                                <th>Nome</th>
+                                <th className='colunaEmail'>Email</th>
+                                <th className='colunaTelefone'>Telefone</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+                        </thead>
+                        <tbody>
+                            {clientesFiltrados.map((item) => (
+                                <tr key={item.id}>
+                                    <td className='align-center'>{item.id}</td>
+                                    <td>{item.nome}</td>
+                                    <td>{item.email}</td>
+                                    <td>{item.telefone}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
         </div>
     );
 }

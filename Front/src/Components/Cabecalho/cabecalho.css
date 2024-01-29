@@ -1,0 +1,25 @@
+.cabecalho {
+    background-color: black;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+}
+
+.container-cabecalho {
+    width: 80vw;
+    margin: 0 auto;    
+}
+
+.btn-voltar {
+    margin: auto;
+    padding: 5px;
+    height: 20px;
+    display: inline-block;
+    font-size: 17px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
+    background-color: rgb(255, 253, 250);
+}
