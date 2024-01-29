@@ -9,7 +9,7 @@ const pool = new Pool({
     database: 'clean',
     password: 'sht@#$X89',
     port: 5432,
-});    
+});
 
 app.get('/clientes', async (req, res) => {
     const client = await pool.connect();
@@ -27,7 +27,20 @@ app.get('/clientes', async (req, res) => {
     }
 });
 
-app.post('/clientes', (req, res) => {
+app.post('/clientes', async (req, res) => {
+    try {
+        const { nome, email, telefone, coordenada_x, coordenada_y } = req.body;
+
+        const query = 'INSERT INTO clientes (nome, email, telefone, coordenada_x, coordenada_y) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+        const values = [nome, email, telefone, coordenada_x, coordenada_y];
+
+        const result = await pool.query(query, values);
+
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao processar a requisição.');
+    }
 });
 
 app.listen(port, () => {
