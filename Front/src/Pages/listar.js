@@ -15,17 +15,33 @@ function ListarClientes() {
         };
 
         fetchData();
-    }, []); 
+    }, []);
 
     return (
         <div>
             <h1>Clientes:</h1>
             {data && (
-                <ul>
-                    {data.map((item) => (
-                        <li key={item.id}>{item.nome}</li>
-                    ))}
-                </ul>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((item) => (
+                            <tr key={item.id}>
+                                <td>{item.id}</td>
+                                <td>{item.nome}</td>
+                                <td>{item.email}</td>
+                                <td>{item.telefone}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+
+                </table>
             )}
         </div>
     );
