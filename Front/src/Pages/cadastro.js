@@ -5,8 +5,8 @@ function CadastroCliente() {
         nome: '',
         email: '',
         telefone: '',
-        cordenadaX: '',
-        cordenadaY: ''
+        coordenada_x: '',
+        coordenada_y: ''
     });
 
     const handleInputChange = (e) => {
@@ -17,7 +17,7 @@ function CadastroCliente() {
         e.preventDefault();
 
         try {
-            const response = await fetch('https://api.exemplo.com/cadastro', {
+            const response = await fetch('http://localhost:3000/clientes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -51,12 +51,12 @@ function CadastroCliente() {
                 <input type="text" name="telefone" value={dados.telefone} onChange={handleInputChange} />
             </label>
             <label>
-                Cordenadas X:
-                <input type="number" name="cordenadasX" value={dados.cordenadasX} onChange={handleInputChange} />
+                Coordenadas X:
+                <input type="number" name="coordenada_x" value={dados.coordenada_x} onChange={handleInputChange} />
             </label>
             <label>
-                Cordenadas Y:
-                <input type="number" name="cordenadasY" value={dados.cordenadasY} onChange={handleInputChange} />
+                Coordenadas Y:
+                <input type="number" name="coordenada_y" value={dados.coordenada_y} onChange={handleInputChange} />
             </label>
             <br />
             <button type="submit">Cadastrar</button>
