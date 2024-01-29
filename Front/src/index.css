@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.input-text {
+  border: 1.5px solid black;
+  border-radius: 2px;
+  min-height: 20px;  
+}
+
+.tabela {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.botao {
+  border: 1.5px solid black;
+  border-radius: 2px;
+  height: 24px; 
+}

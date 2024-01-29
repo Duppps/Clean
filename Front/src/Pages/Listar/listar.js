@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import './listar.css';
 
 function ListarClientes() {
     const [data, setData] = useState(null);
-    const [filtro, setFiltro] = useState('');
     const [clientesFiltrados, setClientesFiltrados] = useState(null);
+    const [filtro, setFiltro] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -11,6 +12,7 @@ function ListarClientes() {
                 const response = await fetch('http://localhost:3000/clientes');
                 const jsonData = await response.json();
                 setData(jsonData);
+                setClientesFiltrados(jsonData);
             } catch (error) {
                 console.error('Erro ao obter dados:', error);
             }
@@ -23,28 +25,36 @@ function ListarClientes() {
         const novoFiltro = e.target.value.toLowerCase();
         setFiltro(novoFiltro);
 
-        const clientesFiltrados = data.filter((cliente) => {
-            return (
-                cliente.nome.toLowerCase().includes(novoFiltro) ||
-                cliente.email.toLowerCase().includes(novoFiltro) ||
-                cliente.telefone.toLowerCase().includes(novoFiltro)
-            );
-        });
+        if (novoFiltro === '') {
+            setClientesFiltrados(data);
+        } else {
+            const clientesFiltrados = data.filter((cliente) => {
+                return (
+                    cliente.nome.toLowerCase().includes(novoFiltro) ||
+                    cliente.email.toLowerCase().includes(novoFiltro) ||
+                    cliente.telefone.toLowerCase().includes(novoFiltro)
+                );
+            });
 
-        setClientesFiltrados(clientesFiltrados);
+            setClientesFiltrados(clientesFiltrados);
+        }
     };
 
     return (
-        <div>
-            <h1>Clientes:</h1>
+        <div className='container'>
+            <div className='cabecalho'>
+                <h1>Clientes:</h1>
+                <button className='botao'>Visualizar melhor rota</button>
+            </div>
             <input
+                className='input-text'
                 type="text"
                 placeholder="Filtrar por nome, email ou telefone"
                 value={filtro}
                 onChange={handleFiltroChange}
             />
             {clientesFiltrados && (
-                <table>
+                <table className='tabela'>
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -56,14 +66,13 @@ function ListarClientes() {
                     <tbody>
                         {clientesFiltrados.map((item) => (
                             <tr key={item.id}>
-                                <td>{item.id}</td>
+                                <td className='align-center'>{item.id}</td>
                                 <td>{item.nome}</td>
                                 <td>{item.email}</td>
                                 <td>{item.telefone}</td>
                             </tr>
                         ))}
                     </tbody>
-
                 </table>
             )}
         </div>
