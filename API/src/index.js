@@ -22,10 +22,19 @@ app.get('/clientes', async (req, res) => {
     try {
         const query = 'SELECT * FROM clientes';
         const result = await client.query(query);
-        res.json(result.rows);
+
+        res.status(200).json({
+            success: true,
+            message: 'Consulta realizada com sucesso!',
+            results: result.rows
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Erro ao executar a consulta.');
+
+        res.status(500).json({
+            success: false,
+            message: 'Erro ao executar a consulta.'
+        });
         return;
     } finally {
         client.release();
@@ -61,18 +70,17 @@ app.get('/rota', async (req, res) => {
     const client = await pool.connect();
 
     try {
-        // 1. Consulta para obter a lista de clientes ordenada pela distância
         const query = 'SELECT *, SQRT(coordenada_x * coordenada_x + coordenada_y * coordenada_y) AS distancia FROM clientes ORDER BY distancia;';
         const result = await client.query(query);
         const clientes = result.rows;
 
-        // 2. Ponto de partida
-        const pontoInicial = { nome: 'Sede', coordenada_x: 0, coordenada_y: 0 };
+        const idPontoInicial = Math.max(...clientes.map(cliente => cliente.id), 0) + 1;
 
-        // 3. Inicializa a rota com o ponto de partida
+        const pontoInicial = { id: idPontoInicial, nome: 'Sede - Início', coordenada_x: 0, coordenada_y: 0 };
+        const pontoFinal = { id: idPontoInicial+1, nome: 'Sede - Final', coordenada_x: 0, coordenada_y: 0 };
+
         const rota = [pontoInicial];
 
-        // 4. Implementação do algoritmo do Vizinho Mais Próximo
         while (rota.length < clientes.length + 1) {
             const ultimoPonto = rota[rota.length - 1];
             let clienteMaisProximo = null;
@@ -92,17 +100,23 @@ app.get('/rota', async (req, res) => {
                 }
             }
 
-            // Adiciona o cliente mais próximo à rota
             rota.push(clienteMaisProximo);
         }
 
-        // 5. Retorna ao ponto de partida
-        rota.push(pontoInicial);
+        rota.push(pontoFinal);
 
-        res.json(rota);
+        res.status(200).json({
+            success: true,
+            message: 'Consulta realizada com sucesso!',
+            results: rota
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Erro ao executar a consulta.');
+
+        res.status(500).json({
+            success: false,
+            message: 'Erro ao executar a consulta.'
+        });
         return;
     } finally {
         client.release();

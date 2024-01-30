@@ -25,11 +25,15 @@
 }
 
 .tabela th.colunaEmail {
-    width: 600px;
+    width: 30%;
 }
 
 .tabela th.colunaTelefone {
     width: 150px;
+}
+
+.tabela th.colunaCoordenada {
+    width: 10%;
 }
 
 .botao {

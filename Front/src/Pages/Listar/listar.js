@@ -1,60 +1,53 @@
+import './listar.css';
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import Cabecalho from '../../Components/Cabecalho/cabecalho';
-import './listar.css';
 
 function ListarClientes() {
-    const [data, setData] = useState(null);
+    const [clientes, setClientes] = useState(null);
+    const [clientesTable, setClientesTable] = useState(null);
     const [rota, setRota] = useState(null);
-    const [clientesFiltrados, setClientesFiltrados] = useState(null);
     const [filtro, setFiltro] = useState('');
-
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
-    const handleOpenModal = () => {
-
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/rota');
-                const jsonData = await response.json();
-                setRota(jsonData);
-            } catch (error) {
-                console.error('Erro ao obter dados:', error);
-            }
-        };
-
-        fetchData();
-
-        setModalIsOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setModalIsOpen(false);
+    const fetchData = async (uri) => {
+        try {
+            const response = await fetch(uri);
+            const { results: data } = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Erro ao obter dados:', error);
+        }
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/clientes');
-                const jsonData = await response.json();
-                setData(jsonData);
-                setClientesFiltrados(jsonData);
-            } catch (error) {
-                console.error('Erro ao obter dados:', error);
-            }
+        const ExibeClientes = async () => {
+            const data = await fetchData('http://localhost:3000/clientes');
+            setClientes(data);
+            setClientesTable(data);
         };
 
-        fetchData();
+        ExibeClientes();
     }, []);
 
-    const handleFiltroChange = (e) => {
+    const OpenModal = async () => {
+        const Data = await fetchData('http://localhost:3000/rota');
+        setRota(Data);
+        setModalIsOpen(true);
+    };
+
+    const CloseModal = () => {
+        setModalIsOpen(false);
+    };
+
+    const FiltroChange = (e) => {
         const novoFiltro = e.target.value.toLowerCase();
         setFiltro(novoFiltro);
 
         if (novoFiltro === '') {
-            setClientesFiltrados(data);
+            setClientesTable(clientes);
         } else {
-            const clientesFiltrados = data.filter((cliente) => {
+            const clientesFiltrados = clientes.filter((cliente) => {
                 return (
                     cliente.nome.toLowerCase().includes(novoFiltro) ||
                     cliente.email.toLowerCase().includes(novoFiltro) ||
@@ -62,46 +55,42 @@ function ListarClientes() {
                 );
             });
 
-            setClientesFiltrados(clientesFiltrados);
+            setClientesTable(clientesFiltrados);
         }
     };
 
     return (
-        <div>
+        <div style={{ marginBottom: '40px' }}>
             <Cabecalho></Cabecalho>
             <div className='container'>
                 <div className='cabecalho-pagina'>
                     <h1>Clientes:</h1>
-                    <button className='botao' onClick={handleOpenModal}>Visualizar melhor rota</button>
+                    <button className='botao' onClick={OpenModal}>Visualizar melhor rota</button>
                 </div>
                 <input
                     className='input-text'
                     type="text"
                     placeholder="Filtrar por nome, email ou telefone"
                     value={filtro}
-                    onChange={handleFiltroChange}
+                    onChange={FiltroChange}
                 />
                 <Modal
                     isOpen={modalIsOpen}
-                    onRequestClose={handleCloseModal}
+                    onRequestClose={CloseModal}
                     contentLabel="Rota"
                     style={{ content: { width: '60vw', height: '60vh', margin: 'auto' } }}
                 >
                     {rota && (
-                        <ul>
+                        <ol>
                             {rota.map((item) => (
                                 <li key={item.id}>
-                                    {item.nome}
-                                    <br />
-                                    X: {item.coordenada_x} -
-                                    Y: {item.coordenada_y}
+                                    {item.nome} <br /> (X: {item.coordenada_x} - Y: {item.coordenada_y})
                                 </li>
                             ))}
-
-                        </ul>
+                        </ol>
                     )}
                 </Modal>
-                {clientesFiltrados && (
+                {clientesTable && clientesTable.length > 0 ? (
                     <table className='tabela'>
                         <thead>
                             <tr>
@@ -109,19 +98,25 @@ function ListarClientes() {
                                 <th>Nome</th>
                                 <th className='colunaEmail'>Email</th>
                                 <th className='colunaTelefone'>Telefone</th>
+                                <th className='colunaCoordenada'>Coordenada X</th>
+                                <th className='colunaCoordenada'>Coordenada Y</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {clientesFiltrados.map((item) => (
+                            {clientesTable.map((item) => (
                                 <tr key={item.id}>
                                     <td className='align-center'>{item.id}</td>
                                     <td>{item.nome}</td>
                                     <td>{item.email}</td>
                                     <td>{item.telefone}</td>
+                                    <td>{item.coordenada_x}</td>
+                                    <td>{item.coordenada_y}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                ) : (
+                    <p>Nenhum cliente cadastrado!</p>
                 )}
             </div>
         </div>
