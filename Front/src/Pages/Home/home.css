@@ -1,0 +1,10 @@
+.containerHome {
+    display: flex;  
+    margin: auto;
+}
+
+.containerMain {
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+}
