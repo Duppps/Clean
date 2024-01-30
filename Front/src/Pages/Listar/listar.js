@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
 import Cabecalho from '../../Components/Cabecalho/cabecalho';
 import './listar.css';
 
@@ -6,6 +7,16 @@ function ListarClientes() {
     const [data, setData] = useState(null);
     const [clientesFiltrados, setClientesFiltrados] = useState(null);
     const [filtro, setFiltro] = useState('');
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const handleOpenModal = () => {
+        setModalIsOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalIsOpen(false);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -47,7 +58,7 @@ function ListarClientes() {
             <div className='container'>
                 <div className='cabecalho-pagina'>
                     <h1>Clientes:</h1>
-                    <button className='botao'>Visualizar melhor rota</button>
+                    <button className='botao' onClick={handleOpenModal}>Visualizar melhor rota</button>
                 </div>
                 <input
                     className='input-text'
@@ -56,6 +67,11 @@ function ListarClientes() {
                     value={filtro}
                     onChange={handleFiltroChange}
                 />
+                <Modal
+                    isOpen={modalIsOpen}
+                    onRequestClose={handleCloseModal}
+                    contentLabel="Exemplo de Modal"
+                ></Modal>
                 {clientesFiltrados && (
                     <table className='tabela'>
                         <thead>
