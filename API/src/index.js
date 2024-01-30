@@ -5,10 +5,10 @@ const app = express();
 const port = 3000;
 
 const pool = new Pool({
-    user: 'postgres',
+    user: 'user',
     host: 'localhost',
     database: 'clean',
-    password: 'sht@#$X89',
+    password: '1234',
     port: 5432,
 });
 
