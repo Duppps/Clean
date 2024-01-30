@@ -5,12 +5,26 @@ import './listar.css';
 
 function ListarClientes() {
     const [data, setData] = useState(null);
+    const [rota, setRota] = useState(null);
     const [clientesFiltrados, setClientesFiltrados] = useState(null);
     const [filtro, setFiltro] = useState('');
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const handleOpenModal = () => {
+
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/rota');
+                const jsonData = await response.json();
+                setRota(jsonData);
+            } catch (error) {
+                console.error('Erro ao obter dados:', error);
+            }
+        };
+
+        fetchData();
+
         setModalIsOpen(true);
     };
 
@@ -70,8 +84,23 @@ function ListarClientes() {
                 <Modal
                     isOpen={modalIsOpen}
                     onRequestClose={handleCloseModal}
-                    contentLabel="Exemplo de Modal"
-                ></Modal>
+                    contentLabel="Rota"
+                    style={{ content: { width: '60vw', height: '60vh', margin: 'auto' } }}
+                >
+                    {rota && (
+                        <ul>
+                            {rota.map((item) => (
+                                <li key={item.id}>
+                                    {item.nome}
+                                    <br />
+                                    X: {item.coordenada_x} -
+                                    Y: {item.coordenada_y}
+                                </li>
+                            ))}
+
+                        </ul>
+                    )}
+                </Modal>
                 {clientesFiltrados && (
                     <table className='tabela'>
                         <thead>
